@@ -7,7 +7,7 @@
 }
 
 body {
-  @apply bg-gradient-to-b from-[#f5f7fb] via-[#f8fafc] to-white text-slate-900 antialiased;
+  @apply bg-gradient-to-b from-[#edf2f8] via-[#f8fafd] to-white text-slate-900 antialiased;
 }
 
 h1,
@@ -25,15 +25,11 @@ a {
 }
 
 .eyebrow {
-  @apply text-xs font-semibold uppercase tracking-[0.2em] text-white/75;
-}
-
-.hero-shell {
-  @apply bg-gradient-to-br from-[#13263c] via-[#274566] to-[#4b6680] shadow-soft;
+  @apply text-xs font-semibold uppercase tracking-[0.2em] text-white/80;
 }
 
 .premium-card {
-  @apply rounded-3xl border border-slate-200/90 bg-white p-6 shadow-soft transition duration-300 hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(32,51,73,0.14)];
+  @apply rounded-3xl border border-slate-200/90 bg-white p-6 shadow-[0_18px_40px_rgba(22,43,61,0.14)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_rgba(18,34,52,0.2)];
 }
 
 .card {
@@ -45,7 +41,7 @@ a {
 }
 
 .btn-ghost {
-  @apply inline-flex items-center justify-center rounded-full border border-white/45 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/10;
+  @apply inline-flex items-center justify-center rounded-full border border-white/55 bg-white/10 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-white/20;
 }
 
 .lang-pill {
