@@ -24,7 +24,7 @@ export const FeatureGrid = ({ items }: { items: { title: string; body: string }[
 export const CTASection = ({ title, actionLabel, href, image, alt }: { title: string; actionLabel: string; href: string; image?: string; alt?: string }) => (
   <section className="relative overflow-hidden rounded-[2rem] p-8 text-white shadow-soft md:p-12">
     <HeroImage src={image} alt={alt ?? title} className="absolute inset-0 h-full w-full" />
-    <div className="absolute inset-0 bg-gradient-to-r from-[#13263ced] via-[#2b4764d1] to-[#4b657fb8]" />
+    <div className="absolute inset-0 bg-gradient-to-r from-[#17304aba] via-[#3153729c] to-[#5d789264]" />
     <div className="relative z-10">
       <h2 className="mb-4 max-w-3xl text-3xl font-semibold leading-tight md:text-4xl">{title}</h2>
       <a href={href} className="btn-primary inline-block bg-white text-stoneSky">{actionLabel}</a>

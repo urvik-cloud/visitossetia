@@ -21,8 +21,9 @@ export const Hero = ({
 }) => (
   <section className="relative overflow-hidden rounded-[2.25rem] border border-[#d8e0e8] bg-[#0e2438] p-5 md:p-8">
     <HeroImage src={image} alt={imageAlt} label={caption} className="absolute inset-0 h-full w-full" />
-    <div className="absolute inset-0 bg-gradient-to-r from-[#071523f2] via-[#0f2336cc] to-[#15344f88]" />
-    <div className="relative z-10 grid min-h-[420px] content-end gap-6 p-3 md:min-h-[560px] md:max-w-4xl md:p-6">
+    <div className="absolute inset-0 bg-gradient-to-r from-[#0f253bc2] via-[#18345096] to-[#2648635c]" />
+    <div className="absolute inset-0 bg-gradient-to-t from-[#0f213a7a] via-transparent to-[#f5f8ff1c]" />
+    <div className="relative z-10 grid min-h-[440px] content-end gap-6 p-3 md:min-h-[620px] md:max-w-4xl md:p-6">
       <p className="eyebrow">{eyebrow}</p>
       <h1 className="text-4xl font-semibold leading-tight text-white md:text-6xl">{title}</h1>
       <p className="max-w-2xl text-base text-white/85 md:text-xl">{subtitle}</p>

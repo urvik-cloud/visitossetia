@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 
 const copy = {
   en: { title: 'Contact / Request a Trip', fields: ['Name', 'Email', 'Preferred dates', 'Number of travelers', 'Language', 'Interests'], message: 'Message' },
-  ru: { title: 'Контакт / Запрос маршрута', fields: ['Имя', 'Email', 'Предпочтительные даты', 'Количество путешественников', 'Язык', 'Интересы'], message: 'Сообщение' },
+  ru: { title: 'Контакт / Запрос маршрута', fields: ['Имя', 'Эл. почта', 'Предпочтительные даты', 'Количество путешественников', 'Язык', 'Интересы'], message: 'Сообщение' },
   zh: { title: '联系 / 提交行程需求', fields: ['姓名', '邮箱', '出行日期', '出行人数', '沟通语言', '兴趣偏好'], message: '留言' },
   ar: { title: 'تواصل / طلب رحلة', fields: ['الاسم', 'البريد الإلكتروني', 'التواريخ المفضلة', 'عدد المسافرين', 'اللغة', 'الاهتمامات'], message: 'الرسالة' }
 } as const;
