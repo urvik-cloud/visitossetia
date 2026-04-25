@@ -1,14 +1,14 @@
 import { notFound } from 'next/navigation';
 import { places } from '@/content/data';
 import { isValidLocale } from '@/i18n/routing';
-import type { Locale } from '@/i18n/locales';
+import { locales, type Locale } from '@/i18n/locales';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Hero } from '@/components/Hero';
 import { CTASection } from '@/components/Misc';
 import { pageMetadata } from '@/lib/seo';
 
 export function generateStaticParams() {
-  return ['en', 'ru', 'zh', 'ar'].flatMap((locale) => places.map((place) => ({ locale, slug: place.slug })));
+  return locales.flatMap((locale) => places.map((place) => ({ locale, slug: place.slug })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
