@@ -9,8 +9,8 @@ export const Header = ({ locale, dictionary, pathname }: { locale: Locale; dicti
       <a className="text-xl font-semibold tracking-tight text-stoneSky" href={`/${locale}`}>
         {dictionary.brand}
       </a>
-      <nav className="hidden items-center gap-6 text-sm text-slate-700 lg:flex">
-        {dictionary.nav.slice(0, 7).map((item) => (
+      <nav className="hidden items-center gap-5 text-sm text-slate-700 xl:flex">
+        {dictionary.nav.slice(0, 8).map((item) => (
           <a key={item.key} href={`/${locale}${item.href}`} className="transition hover:text-stoneSky">
             {item.label}
           </a>
@@ -36,6 +36,7 @@ export const Footer = ({ locale, dictionary }: { locale: Locale; dictionary: Dic
       <nav className="grid gap-2 text-sm text-slate-700">
         <a href={`/${locale}/places`}>{dictionary.footer.places}</a>
         <a href={`/${locale}/itineraries`}>{dictionary.footer.itineraries}</a>
+        <a href={`/${locale}/concierge`}>{dictionary.footer.concierge}</a>
         <a href={`/${locale}/plan`}>{dictionary.footer.plan}</a>
         <a href={`/${locale}/contact`}>{dictionary.footer.contact}</a>
       </nav>
