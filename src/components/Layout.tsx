@@ -4,14 +4,14 @@ import type { Locale } from '@/i18n/locales';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const Header = ({ locale, dictionary, pathname }: { locale: Locale; dictionary: Dictionary; pathname: string }) => (
-  <header className="sticky top-0 z-20 border-b border-white/40 bg-slate-50/80 backdrop-blur-md">
-    <div className="container-pad flex flex-wrap items-center justify-between gap-4 py-4">
-      <a className="text-xl font-semibold tracking-tight text-stoneSky" href={`/${locale}`}>
+  <header className="sticky top-0 z-20 border-b border-[#e5e7ea] bg-[#f7f5f1]/90 backdrop-blur-md">
+    <div className="container-pad flex flex-wrap items-center justify-between gap-3 py-4">
+      <a className="text-xl font-semibold tracking-tight text-[#142434]" href={`/${locale}`}>
         {dictionary.brand}
       </a>
-      <nav className="hidden items-center gap-5 text-sm text-slate-700 xl:flex">
+      <nav className="hidden items-center gap-6 text-sm text-slate-600 xl:flex">
         {dictionary.nav.slice(0, 8).map((item) => (
-          <a key={item.key} href={`/${locale}${item.href}`} className="transition hover:text-stoneSky">
+          <a key={item.key} href={`/${locale}${item.href}`} className="hover:text-[#142434]">
             {item.label}
           </a>
         ))}
@@ -27,11 +27,11 @@ export const Header = ({ locale, dictionary, pathname }: { locale: Locale; dicti
 );
 
 export const Footer = ({ locale, dictionary }: { locale: Locale; dictionary: Dictionary }) => (
-  <footer className="mt-20 border-t border-slate-200 bg-white/90 py-12">
+  <footer className="mt-20 border-t border-[#e5e7ea] bg-[#f7f5f1] py-12">
     <div className="container-pad grid gap-8 md:grid-cols-3">
       <div className="space-y-3">
-        <p className="text-lg font-semibold text-stoneSky">{dictionary.brand}</p>
-        <p className="text-sm text-slate-600">{dictionary.disclaimer}</p>
+        <p className="text-lg font-semibold text-[#142434]">{dictionary.brand}</p>
+        <p className="text-sm leading-relaxed text-slate-600">{dictionary.disclaimer}</p>
       </div>
       <nav className="grid gap-2 text-sm text-slate-700">
         <a href={`/${locale}/places`}>{dictionary.footer.places}</a>
