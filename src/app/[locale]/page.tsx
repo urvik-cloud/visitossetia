@@ -1,69 +1,194 @@
 import { Hero } from '@/components/Hero';
 import { PlaceCard, ItineraryCard, TourCard } from '@/components/Cards';
 import { SectionHeader } from '@/components/SectionHeader';
-import { CTASection, FeatureGrid, TrustStrip } from '@/components/Misc';
+import { CTASection, FeatureGrid } from '@/components/Misc';
 import { getDictionary } from '@/i18n/dictionary';
 import { isValidLocale } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
 import { pageMetadata } from '@/lib/seo';
 import { places } from '@/content/data';
 import type { Locale } from '@/i18n/locales';
-import Image from 'next/image';
+
 
 type Copy = {
-  title: string; subtitle: string; heroEyebrow: string; heroCaption: string; primaryCta: string; secondaryCta: string;
-  whyTitle: string; whySubtitle: string; whyItems: { title: string; body: string }[];
-  placesTitle: string; placesSubtitle: string;
-  routesTitle: string; routesSubtitle: string;
-  dayPreviewTitle: string; dayPreviewSubtitle: string; dayPreviewCard: { dayLabel: string; title: string; body: string };
-  foodTitle: string; foodSubtitle: string; foodItems: { title: string; body: string }[];
-  confidenceTitle: string; confidenceSubtitle: string; confidenceItems: string[];
-  supportTitle: string; supportSubtitle: string; supportCard: { title: string; duration: string; bestFor: string; body: string };
-  concierge: { title: string; subtitle: string; body: string; cta: string };
+  title: string;
+  subtitle: string;
+  heroEyebrow: string;
+  heroCaption: string;
+  primaryCta: string;
+  secondaryCta: string;
+  reasonsTitle: string;
+  reasonsSubtitle: string;
+  reasons: { title: string; body: string }[];
+  plannerTitle: string;
+  plannerSubtitle: string;
+  plannerInput: string;
+  plannerTags: string[];
+  plannerAction: string;
+  placesTitle: string;
+  placesSubtitle: string;
+  routesTitle: string;
+  routesSubtitle: string;
+  dayPreviewCard: { dayLabel: string; title: string; body: string };
+  supportTitle: string;
+  supportSubtitle: string;
+  supportCard: { title: string; duration: string; bestFor: string; body: string };
   finalCta: string;
 };
 
 const homeContent: Record<Locale, Copy> = {
-  en: { title: 'North Ossetia — The Mountain Heart of the Caucasus', subtitle: 'Ancient towers, alpine roads, and warm Ossetian hospitality in one cinematic journey.', heroEyebrow: 'Premium destination guide', heroCaption: 'Sunrise over Caucasus mountains', primaryCta: 'Explore Routes', secondaryCta: 'Plan Your Trip',
-    whyTitle: 'Why Visit Ossetia', whySubtitle: 'For travelers who prefer depth, atmosphere, and practical confidence over checklist tourism.',
-    whyItems: [{ title: 'Cinematic mountain roads', body: 'Drive through deep valleys and high panoramas where every turn feels editorial.' }, { title: 'Ancient Alanian heritage', body: 'Stone towers, monasteries, and layered history rooted in daily life.' }, { title: 'Authentic table culture', body: 'Ossetian pies and family hospitality with real local character.' }, { title: 'Calm, curated travel pace', body: 'Routes designed for quality, comfort, and meaningful time in each stop.' }],
-    placesTitle: 'Signature places', placesSubtitle: 'Handpicked destinations with atmosphere, context, and route logic.',
-    routesTitle: 'Scenic routes', routesSubtitle: 'Mountain-driving arcs designed for visual impact and smooth timing.',
-    dayPreviewTitle: '3-day journey preview', dayPreviewSubtitle: 'A strong first route that balances city rhythm, heritage, and mountain landscapes.', dayPreviewCard: { dayLabel: '3-day journey', title: 'Classic sequence: Vladikavkaz, Dargavs, Fiagdon', body: 'A refined itinerary with city evenings, valley drives, and flexible photo stops.' },
-    foodTitle: 'Food and culture', foodSubtitle: 'Travel beyond viewpoints with stories, rituals, and table traditions.', foodItems: [{ title: 'Ossetian pies and family tables', body: 'Cuisine here is a cultural language, not just a menu item.' }, { title: 'Mountain hospitality', body: 'Warm welcome, generous hosting, and respectful guest traditions.' }, { title: 'Living heritage', body: 'Architecture, memory, and local rhythm woven into each village.' }],
-    confidenceTitle: 'Travel confidence', confidenceSubtitle: 'Clear expectations on roads, seasons, and logistics before departure.', confidenceItems: ['Seasonal route guidance in plain language', 'Realistic road-time planning', 'Multilingual support for trip structure', 'Family and private-group friendly pacing'],
-    supportTitle: 'Curated route support', supportSubtitle: 'Tell us your style, dates, and comfort level. We help shape a route that works beautifully in real conditions.', supportCard: { title: 'Private trip support', duration: 'Flexible pacing', bestFor: 'Families, private groups, first-time Caucasus travelers', body: 'From transport logic to stop sequencing, get a route draft built around your priorities.' },
-    concierge: { title: 'Ossetia Travel Concierge', subtitle: 'Premium planning prototype', body: 'Describe your travel style in natural language and preview a polished route concept in seconds.', cta: 'Open AI Concierge' }, finalCta: 'Plan your North Ossetia journey with cinematic landscapes and practical clarity.' },
-  ru: { title: 'Северная Осетия — горное сердце Кавказа', subtitle: 'Древние башни, серпантины и настоящее осетинское гостеприимство в одном сильном путешествии.', heroEyebrow: 'Премиальный тревел-гид', heroCaption: 'Рассвет в горах Кавказа', primaryCta: 'Исследовать маршруты', secondaryCta: 'Спланировать поездку',
-    whyTitle: 'Почему стоит ехать в Осетию', whySubtitle: 'Для тех, кто ценит атмосферу, смысл и комфортную организацию маршрута.',
-    whyItems: [{ title: 'Кинематографичные горные дороги', body: 'Ущелья, перевалы и смотровые, где каждый поворот запоминается.' }, { title: 'Наследие древней Алании', body: 'Башни, монастыри и историческая глубина, которая чувствуется в ландшафте.' }, { title: 'Живая гастрокультура', body: 'Осетинские пироги, семейные традиции и тёплый формат приема гостей.' }, { title: 'Маршруты с правильным ритмом', body: 'Не гонка по точкам, а продуманное путешествие с временем на впечатления.' }],
-    placesTitle: 'Главные места', placesSubtitle: 'Отобранные локации с понятной логикой и сильной визуальной подачей.',
-    routesTitle: 'Сценические маршруты', routesSubtitle: 'Дорожные дуги по горам, где красиво и удобно держать темп.',
-    dayPreviewTitle: 'Превью путешествия на 3 дня', dayPreviewSubtitle: 'Базовый маршрут, где уравновешены город, история и горная часть.', dayPreviewCard: { dayLabel: 'Путешествие на 3 дня', title: 'Классический ритм: Владикавказ, Даргавс, Фиагдон', body: 'Городские вечера, видовые дороги и остановки в ключевых точках.' },
-    foodTitle: 'Еда и культура', foodSubtitle: 'Путешествие не только про виды, но и про характер региона.', foodItems: [{ title: 'Осетинские пироги и застолье', body: 'Здесь еда — часть истории, общения и уважения к гостю.' }, { title: 'Горное гостеприимство', body: 'Тёплый прием и ощущение, что вас ждут не формально, а по-настоящему.' }, { title: 'Живое наследие', body: 'Архитектура, обычаи и ритм сёл, которые создают глубину маршрута.' }],
-    confidenceTitle: 'Путешествуйте уверенно', confidenceSubtitle: 'Понимайте сезонность, дороги и организацию заранее.', confidenceItems: ['Понятно о сезонах и погоде', 'Реалистичный тайминг переездов', 'Поддержка планирования на нескольких языках', 'Комфортный ритм для семей и частных групп'],
-    supportTitle: 'Кураторская поддержка маршрута', supportSubtitle: 'Расскажите о формате поездки и датах — мы поможем собрать удобный и красивый маршрут.', supportCard: { title: 'Поддержка частного маршрута', duration: 'Гибкий темп', bestFor: 'Семьи, мини-группы, первое путешествие на Кавказ', body: 'От логистики до последовательности остановок — всё под ваш стиль путешествия.' },
-    concierge: { title: 'Ossetia Travel Concierge', subtitle: 'Премиальный прототип планирования', body: 'Опишите поездку обычным языком и получите аккуратный черновик маршрута за пару секунд.', cta: 'Открыть ИИ-консьержа' }, finalCta: 'Соберите маршрут по Северной Осетии, где впечатляющие виды сочетаются с продуманной логикой.' },
-  zh: { title: '北奥塞梯——高加索的山地之心', subtitle: '古塔、峡谷公路与热情待客文化，共同构成一段有质感的高山旅程。', heroEyebrow: '高端目的地指南', heroCaption: '高加索山地日出', primaryCta: '探索路线', secondaryCta: '规划行程',
-    whyTitle: '为什么选择北奥塞梯', whySubtitle: '适合重视风景质感、文化深度与行程可靠性的旅行者。',
-    whyItems: [{ title: '电影感山地公路', body: '峡谷与高山道路连成完整旅程，视觉冲击力强。' }, { title: '阿兰文明遗产', body: '古塔与修道院分布在真实生活场景中，文化体验不空泛。' }, { title: '在地饮食文化', body: '奥塞梯馅饼与家庭式待客传统，让旅行更有温度。' }, { title: '节奏友好的路线设计', body: '不过度赶路，强调体验质量与舒适度。' }],
-    placesTitle: '精选目的地', placesSubtitle: '重点地点配套实用信息，便于快速决策。',
-    routesTitle: '风景路线', routesSubtitle: '兼顾拍摄效果与路程效率的山地线路。',
-    dayPreviewTitle: '3天行程预览', dayPreviewSubtitle: '一条均衡示范线：城市、历史、人文与山景兼顾。', dayPreviewCard: { dayLabel: '3天旅程', title: '经典顺序：城市—达尔加夫斯—菲亚格东', body: '从城市节奏过渡到峡谷公路，行程流畅且出片率高。' },
-    foodTitle: '美食与文化', foodSubtitle: '不止看风景，更深入当地生活方式。', foodItems: [{ title: '奥塞梯馅饼与家庭餐桌', body: '餐桌礼仪和待客文化是理解当地的重要入口。' }, { title: '山地待客传统', body: '从接待方式到日常交流，都体现温暖与尊重。' }, { title: '活态文化遗产', body: '建筑、习俗与村落节奏共同塑造旅行记忆。' }],
-    confidenceTitle: '安心出行', confidenceSubtitle: '提前掌握季节、路况和交通组织。', confidenceItems: ['季节建议清晰易懂', '车程预估更贴近实际', '支持多语言沟通', '适合家庭与小团的稳妥节奏'],
-    supportTitle: '定制路线支持', supportSubtitle: '告诉我们日期、偏好和预算节奏，我们将提供可执行的高质量路线建议。', supportCard: { title: '私人路线支持', duration: '节奏可调', bestFor: '家庭出行、私人小团、首次到访高加索', body: '从交通衔接到停靠顺序，帮助你把路线做得更顺、更安心。' },
-    concierge: { title: 'Ossetia Travel Concierge', subtitle: '高端行程原型', body: '用自然语言描述需求，即可快速预览一份结构清晰的路线方案。', cta: '打开AI旅行顾问' }, finalCta: '现在开始规划北奥塞梯之旅，让每天都兼具风景与体验品质。' },
-  ar: { title: 'أوسيتيا الشمالية — القلب الجبلي للقوقاز', subtitle: 'أبراج تاريخية وطرق جبلية خلابة وضيافة أوسيتية دافئة في رحلة واحدة متكاملة.', heroEyebrow: 'دليل وجهة فاخر', heroCaption: 'شروق الشمس فوق جبال القوقاز', primaryCta: 'استكشف المسارات', secondaryCta: 'خطط لرحلتك',
-    whyTitle: 'لماذا أوسيتيا الشمالية', whySubtitle: 'وجهة مناسبة لمن يبحث عن المشهد القوي والتخطيط الموثوق والتجربة الثقافية الراقية.',
-    whyItems: [{ title: 'طرق جبلية بطابع سينمائي', body: 'الوديان والمرتفعات تمنحك رحلة بصرية متماسكة من البداية حتى النهاية.' }, { title: 'إرث ألاني عريق', body: 'أبراج حجرية وأديرة تاريخية تحكي هوية المكان بوضوح.' }, { title: 'ثقافة ضيافة ومائدة أصيلة', body: 'التجربة هنا إنسانية ودافئة، وليست مجرد توقفات سريعة.' }, { title: 'إيقاع سفر هادئ ومدروس', body: 'مسارات مصممة للجودة والراحة بدل الجداول المزدحمة.' }],
-    placesTitle: 'أماكن مميزة', placesSubtitle: 'وجهات منتقاة بعناية مع سياق عملي واضح.',
-    routesTitle: 'مسارات بانورامية', routesSubtitle: 'خطوط سير جبلية تجمع الجمال البصري وسهولة التنفيذ.',
-    dayPreviewTitle: 'معاينة رحلة 3 أيام', dayPreviewSubtitle: 'خطة متوازنة تجمع المدينة والتراث والطرق الجبلية.', dayPreviewCard: { dayLabel: 'رحلة 3 أيام', title: 'التسلسل الكلاسيكي: فلاديقوقاز، دارغافس، فياغدون', body: 'إيقاع متدرج بين المدينة والوديان مع محطات تصوير مريحة.' },
-    foodTitle: 'الطعام والثقافة', foodSubtitle: 'رحلة غنية بالقصص والعادات وليست مجرد مناظر.', foodItems: [{ title: 'فطائر أوسيتية ومائدة عائلية', body: 'المطبخ المحلي جزء من الهوية الثقافية اليومية.' }, { title: 'ضيافة جبلية دافئة', body: 'أسلوب استقبال يوازن بين الكرم والخصوصية.' }, { title: 'تراث حيّ', body: 'العمارة والعادات ونمط الحياة يمنحون الرحلة عمقًا حقيقيًا.' }],
-    confidenceTitle: 'سافر بثقة', confidenceSubtitle: 'افهم المواسم والطرق والخدمات قبل الانطلاق.', confidenceItems: ['توضيح مباشر لأفضل المواسم', 'تقدير واقعي لأزمنة التنقل', 'دعم تخطيط متعدد اللغات', 'إيقاع مناسب للعائلات والمجموعات الخاصة'],
-    supportTitle: 'دعم مسارات مخصص', supportSubtitle: 'شاركنا تفضيلاتك وتواريخك لنقترح مسارًا عمليًا وفاخرًا يناسبك.', supportCard: { title: 'دعم الرحلات الخاصة', duration: 'مرونة كاملة', bestFor: 'العائلات، المجموعات الخاصة، زوار القوقاز لأول مرة', body: 'نساعدك في ضبط النقل والتوقفات وتسلسل الأيام بصورة مريحة وواضحة.' },
-    concierge: { title: 'Ossetia Travel Concierge', subtitle: 'نموذج تخطيط فاخر', body: 'اكتب تفضيلاتك بلغة طبيعية واحصل فورًا على معاينة مسار أنيق ومناسب للعائلة أو الرحلة الخاصة.', cta: 'افتح مرشد السفر الذكي' }, finalCta: 'ابدأ تخطيط رحلتك إلى أوسيتيا الشمالية بأسلوب يجمع بين الراحة وروعة المشهد.' }
+  en: {
+    title: 'A mature mountain destination for travelers seeking the real Caucasus',
+    subtitle: 'Scenic roads, tower landscapes, calm city rhythm, and clear route logic for a premium journey in North Ossetia.',
+    heroEyebrow: 'North Ossetia • Caucasus',
+    heroCaption: 'First impression: light, scale, and practical clarity.',
+    primaryCta: 'Explore Routes',
+    secondaryCta: 'Plan Your Trip',
+    reasonsTitle: 'Three reasons to choose Ossetia',
+    reasonsSubtitle: 'Compact geography with high experience density: less transfer time, more meaningful travel.',
+    reasons: [
+      { title: 'Heritage', body: 'Stone towers, villages, and historical layers integrated into the living landscape.' },
+      { title: 'Routes', body: 'Scenic mountain arcs you can comfortably structure across three to five days.' },
+      { title: 'Comfort', body: 'Private driver, guide support, and curated pacing for family and premium travel.' }
+    ],
+    plannerTitle: 'One clear window for planning',
+    plannerSubtitle: 'Share your dates, comfort level, interests, and pace. Get a polished first scenario without complexity.',
+    plannerInput: '4 days in September. Scenic drives, strong views, local cuisine, no difficult hikes.',
+    plannerTags: ['4 days', 'Comfort', 'Photo', 'Cuisine'],
+    plannerAction: 'Build My Route',
+    placesTitle: 'Signature places',
+    placesSubtitle: 'Editorially selected destinations with practical context.',
+    routesTitle: 'Route previews',
+    routesSubtitle: 'Start with reliable route architecture before fine-tuning your journey.',
+    dayPreviewCard: {
+      dayLabel: '3-day route',
+      title: 'Classic flow: Vladikavkaz, Dargavs, Fiagdon',
+      body: 'A balanced sequence with city evenings, valley drives, and flexible stops for viewpoints.'
+    },
+    supportTitle: 'Ossetia Travel Concierge',
+    supportSubtitle: 'Premium planning preview for private and family trips with multilingual support.',
+    supportCard: {
+      title: 'Private trip support',
+      duration: 'Flexible pacing',
+      bestFor: 'Families, private groups, first-time visitors',
+      body: 'From transfer logic to day sequencing, receive a route draft built for real travel conditions.'
+    },
+    finalCta: 'Some places are overhyped. Others are genuinely worth the journey.'
+  },
+  ru: {
+    title: 'Зрелое горное направление для тех, кто ищет настоящий Кавказ',
+    subtitle: 'Сценические дороги, башенные пейзажи, спокойный ритм города и понятная логика маршрута по Северной Осетии.',
+    heroEyebrow: 'Северная Осетия • Кавказ',
+    heroCaption: 'Первое впечатление: свет, масштаб и ясная структура поездки.',
+    primaryCta: 'Исследовать маршруты',
+    secondaryCta: 'План поездки',
+    reasonsTitle: 'Три причины выбрать Осетию',
+    reasonsSubtitle: 'Компактный регион с высокой плотностью впечатлений: меньше переездов, больше содержания.',
+    reasons: [
+      { title: 'Наследие', body: 'Башни, селения и исторические слои, встроенные в живой ландшафт.' },
+      { title: 'Маршруты', body: 'Сценические горные дуги, которые удобно собрать за 3–5 дней без спешки.' },
+      { title: 'Комфорт', body: 'Водитель, гид и аккуратное планирование в темпе, удобном для семьи и частных групп.' }
+    ],
+    plannerTitle: 'Одно окно для планирования',
+    plannerSubtitle: 'Опишите поездку обычным языком: даты, ритм, интересы и уровень комфорта. Получите аккуратный первый сценарий.',
+    plannerInput: '4 дня в сентябре. Красивые дороги, хорошие виды, местная кухня, без сложных походов.',
+    plannerTags: ['4 дня', 'Комфорт', 'Фото', 'Кухня'],
+    plannerAction: 'Собрать маршрут',
+    placesTitle: 'Ключевые места',
+    placesSubtitle: 'Отобранные локации с практическим контекстом и живой атмосферой.',
+    routesTitle: 'Превью маршрутов',
+    routesSubtitle: 'Начните с понятной структуры поездки, а затем доработайте детали под себя.',
+    dayPreviewCard: {
+      dayLabel: 'Маршрут на 3 дня',
+      title: 'Классическая связка: Владикавказ, Даргавс, Фиагдон',
+      body: 'Сбалансированный ритм: городские вечера, ущелья, панорамные точки и гибкие остановки.'
+    },
+    supportTitle: 'Ossetia Travel Concierge',
+    supportSubtitle: 'Премиальный черновик планирования для семейных и частных путешествий.',
+    supportCard: {
+      title: 'Поддержка частного маршрута',
+      duration: 'Гибкий темп',
+      bestFor: 'Семьи, мини-группы, первое знакомство с Кавказом',
+      body: 'Поможем собрать маршрут с комфортной логистикой, правильной последовательностью и ясными ожиданиями.'
+    },
+    finalCta: 'Некоторые места шумные. Другие действительно стоят вашей поездки.'
+  },
+  zh: {
+    title: '成熟稳妥的山地目的地，适合想真正看懂高加索的旅行者',
+    subtitle: '公路风景、古塔地貌、安静城市节奏与清晰行程逻辑，在北奥塞梯形成完整体验。',
+    heroEyebrow: '北奥塞梯 • 高加索',
+    heroCaption: '第一印象：通透光线、开阔尺度、规划清晰。',
+    primaryCta: '探索路线',
+    secondaryCta: '规划行程',
+    reasonsTitle: '选择奥塞梯的三个理由',
+    reasonsSubtitle: '区域紧凑但内容密度高：少折返、多体验。',
+    reasons: [
+      { title: '遗产', body: '古塔、村落与历史层次直接嵌入真实山地生活场景。' },
+      { title: '路线', body: '风景公路组合清晰，3–5天即可完成高质量行程。' },
+      { title: '舒适', body: '可配司机、向导与精细节奏，适合家庭与私享出行。' }
+    ],
+    plannerTitle: '一个入口完成规划',
+    plannerSubtitle: '直接写下天数、偏好、节奏与预算重点，即可得到可执行的首版方案。',
+    plannerInput: '9月4天，想看风景公路和山谷，吃本地菜，不安排高强度徒步。',
+    plannerTags: ['4天', '舒适', '拍照', '美食'],
+    plannerAction: '生成路线',
+    placesTitle: '精选目的地',
+    placesSubtitle: '重点地点配合实用说明，便于快速判断。',
+    routesTitle: '路线预览',
+    routesSubtitle: '先确定可靠框架，再按个人偏好细调。',
+    dayPreviewCard: {
+      dayLabel: '3天路线',
+      title: '经典顺序：符拉季高加索—达尔加夫斯—菲亚格东',
+      body: '城市与山谷节奏衔接顺畅，摄影点和停留时间更好把控。'
+    },
+    supportTitle: 'Ossetia Travel Concierge',
+    supportSubtitle: '面向家庭与私人出行的高品质规划预览。',
+    supportCard: {
+      title: '私人路线支持',
+      duration: '节奏可调',
+      bestFor: '家庭、私团、首次到访高加索',
+      body: '从交通衔接到每日顺序，帮助你把行程做得更稳、更顺、更安心。'
+    },
+    finalCta: '有些地方被过度宣传，有些地方值得你真正出发。'
+  },
+  ar: {
+    title: 'وجهة جبلية راقية لمن يريد القوقاز الحقيقي بهدوء ووضوح',
+    subtitle: 'طرق بانورامية وأبراج تاريخية وإيقاع مدينة مريح مع تخطيط عملي واضح في أوسيتيا الشمالية.',
+    heroEyebrow: 'أوسيتيا الشمالية • القوقاز',
+    heroCaption: 'الانطباع الأول: ضوء ناعم، مشهد واسع، وخطة واضحة.',
+    primaryCta: 'استكشف المسارات',
+    secondaryCta: 'خطط رحلتك',
+    reasonsTitle: 'ثلاثة أسباب لاختيار أوسيتيا',
+    reasonsSubtitle: 'منطقة مدمجة بتجارب غنية: تنقل أقل وقيمة أعلى لكل يوم.',
+    reasons: [
+      { title: 'التراث', body: 'أبراج وقرى وتاريخ حيّ حاضر داخل المشهد الطبيعي اليومي.' },
+      { title: 'المسارات', body: 'طرق جبلية جميلة يمكن ترتيبها بسهولة خلال 3 إلى 5 أيام.' },
+      { title: 'الراحة', body: 'سائق خاص، دعم إرشادي، وإيقاع مريح مناسب للعائلات والرحلات الخاصة.' }
+    ],
+    plannerTitle: 'نافذة واحدة للتخطيط',
+    plannerSubtitle: 'اكتب عدد الأيام ونمط الرحلة ودرجة الراحة، لتحصل على تصور أولي أنيق وسهل التنفيذ.',
+    plannerInput: '4 أيام في سبتمبر، طرق جميلة ومناظر قوية ومأكولات محلية بدون مسارات مشي صعبة.',
+    plannerTags: ['4 أيام', 'راحة', 'تصوير', 'مطبخ'],
+    plannerAction: 'أنشئ مساري',
+    placesTitle: 'أماكن مختارة',
+    placesSubtitle: 'وجهات منتقاة مع شرح عملي يساعدك على القرار بسرعة.',
+    routesTitle: 'معاينة المسارات',
+    routesSubtitle: 'ابدأ بهيكل موثوق للرحلة ثم عدّل التفاصيل كما يناسب عائلتك أو مجموعتك.',
+    dayPreviewCard: {
+      dayLabel: 'مسار 3 أيام',
+      title: 'التسلسل الكلاسيكي: فلاديقوقاز، دارغافس، فياغدون',
+      body: 'توازن مريح بين إيقاع المدينة وطرق الوديان مع محطات تصوير مرنة.'
+    },
+    supportTitle: 'Ossetia Travel Concierge',
+    supportSubtitle: 'معاينة تخطيط راقية للرحلات الخاصة والعائلية.',
+    supportCard: {
+      title: 'دعم الرحلات الخاصة',
+      duration: 'إيقاع مرن',
+      bestFor: 'العائلات، المجموعات الخاصة، الزوار لأول مرة',
+      body: 'نساعدك في ترتيب النقل وتسلسل الأيام بشكل واضح ومريح ويحفظ الخصوصية.'
+    },
+    finalCta: 'بعض الوجهات مزدحمة بلا عمق. وأخرى تستحق الرحلة فعلًا.'
+  }
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
@@ -80,37 +205,107 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   const copy = homeContent[locale];
 
   return (
-    <div className="space-y-16 md:space-y-24">
-      <Hero title={copy.title} subtitle={copy.subtitle} primaryCta={{ label: copy.primaryCta, href: `/${locale}/itineraries` }} secondaryCta={{ label: copy.secondaryCta, href: `/${locale}/plan` }} image="/images/01_hero_mountains_sunrise.jpg" imageAlt={copy.heroCaption} eyebrow={copy.heroEyebrow} caption={copy.heroCaption} />
-      <TrustStrip items={d.trustStrip} />
+    <div className="space-y-14 md:space-y-20">
+      <Hero
+        title={copy.title}
+        subtitle={copy.subtitle}
+        primaryCta={{ label: copy.primaryCta, href: `/${locale}/itineraries` }}
+        secondaryCta={{ label: copy.secondaryCta, href: `/${locale}/plan` }}
+        image="/images/01_hero_mountains_sunrise.jpg"
+        imageAlt={copy.heroCaption}
+        eyebrow={copy.heroEyebrow}
+        caption={copy.heroCaption}
+      />
 
-      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
-        <div className="space-y-8"><SectionHeader title={copy.whyTitle} subtitle={copy.whySubtitle} /><FeatureGrid items={copy.whyItems} /></div>
-        <aside className="relative overflow-hidden rounded-[2rem] border border-slate-200 p-6 md:p-8">
-          <Image src="/images/04_hero_fiagdon_valley.jpg" alt={copy.concierge.title} fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#17324d82] via-[#21456285] to-[#0f2438bb]" />
-          <div className="relative z-10 space-y-4 text-white">
-            <p className="eyebrow">{copy.concierge.subtitle}</p>
-            <h3 className="text-3xl font-semibold leading-tight">{copy.concierge.title}</h3>
-            <p className="text-white/90">{copy.concierge.body}</p>
-            <a href={`/${locale}/concierge`} className="btn-primary inline-flex bg-white text-stoneSky">{copy.concierge.cta}</a>
-          </div>
-        </aside>
+      <section className="space-y-8">
+        <SectionHeader title={copy.reasonsTitle} subtitle={copy.reasonsSubtitle} />
+        <FeatureGrid items={copy.reasons} />
       </section>
 
-      <section className="space-y-8"><SectionHeader title={copy.placesTitle} subtitle={copy.placesSubtitle} /><div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">{places.map((place) => <PlaceCard key={place.slug} title={place.title[locale]} description={place.short[locale]} bestFor={place.bestFor[locale]} time={place.time[locale]} category={place.heroLabel[locale]} image={place.image} alt={place.heroLabel[locale]} labels={{ bestFor: d.labels.bestFor, practical: d.labels.practicalNote }} cta={<a href={`/${locale}/places/${place.slug}`} className="inline-flex text-sm font-semibold text-stoneSky hover:text-accent">{d.ctas.explorePlaces} →</a>} />)}</div></section>
+      <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+        <div className="space-y-4">
+          <SectionHeader title={copy.plannerTitle} subtitle={copy.plannerSubtitle} />
+        </div>
+        <article className="premium-card space-y-4 rounded-[2rem]">
+          <textarea readOnly className="min-h-36 w-full rounded-2xl border border-[#e5e7ea] bg-white p-4 text-slate-700" value={copy.plannerInput} />
+          <div className="flex flex-wrap gap-2">
+            {copy.plannerTags.map((tag) => (
+              <span key={tag} className="rounded-full bg-[#edf3f6] px-3 py-1 text-sm font-semibold text-[#315a78]">
+                {tag}
+              </span>
+            ))}
+          </div>
+          <a href={`/${locale}/plan`} className="btn-primary inline-flex">
+            {copy.plannerAction}
+          </a>
+        </article>
+      </section>
 
-      <section className="space-y-8 rounded-[2rem] bg-gradient-to-br from-[#10253a] via-[#1e3c5a] to-[#486170] p-6 md:p-10 text-white"><SectionHeader title={copy.routesTitle} subtitle={copy.routesSubtitle} /><div className="grid gap-6 md:grid-cols-2"><ItineraryCard dayLabel={copy.dayPreviewCard.dayLabel} title={copy.dayPreviewCard.title} description={copy.dayPreviewCard.body} image="/images/03_hero_caucasus_peaks.jpg" alt={copy.routesTitle} cta={<a href={`/${locale}/itineraries/3-day-north-ossetia`} className="inline-flex text-sm font-semibold text-white hover:text-amber-200">{d.ctas.viewItineraries} →</a>} /><TourCard title={copy.supportCard.title} duration={copy.supportCard.duration} bestFor={copy.supportCard.bestFor} description={copy.supportCard.body} image="/images/02_hero_tower_landscape.jpg" alt={copy.supportTitle} eyebrow={d.labels.travelSupport} cta={<a href={`/${locale}/contact`} className="inline-flex text-sm font-semibold text-white hover:text-amber-200">{d.ctas.requestTrip} →</a>} /></div></section>
+      <section className="space-y-8">
+        <SectionHeader title={copy.placesTitle} subtitle={copy.placesSubtitle} />
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {places.slice(0, 3).map((place) => (
+            <PlaceCard
+              key={place.slug}
+              title={place.title[locale]}
+              description={place.short[locale]}
+              bestFor={place.bestFor[locale]}
+              time={place.time[locale]}
+              category={place.heroLabel[locale]}
+              image={place.image}
+              alt={place.heroLabel[locale]}
+              labels={{ bestFor: d.labels.bestFor, practical: d.labels.practicalNote }}
+              cta={
+                <a href={`/${locale}/places/${place.slug}`} className="inline-flex text-sm font-semibold text-[#315a78] hover:text-[#142434]">
+                  {d.ctas.explorePlaces} →
+                </a>
+              }
+            />
+          ))}
+        </div>
+      </section>
 
-      <section className="space-y-8"><SectionHeader title={copy.dayPreviewTitle} subtitle={copy.dayPreviewSubtitle} /><article className="premium-card"><h3 className="text-2xl font-semibold">{copy.dayPreviewCard.title}</h3><p className="mt-3 text-slate-700">{copy.dayPreviewCard.body}</p></article></section>
+      <section className="space-y-8">
+        <SectionHeader title={copy.routesTitle} subtitle={copy.routesSubtitle} />
+        <div className="grid gap-6 md:grid-cols-2">
+          <ItineraryCard
+            dayLabel={copy.dayPreviewCard.dayLabel}
+            title={copy.dayPreviewCard.title}
+            description={copy.dayPreviewCard.body}
+            image="/images/03_hero_caucasus_peaks.jpg"
+            alt={copy.routesTitle}
+            cta={
+              <a href={`/${locale}/itineraries/3-day-north-ossetia`} className="inline-flex text-sm font-semibold text-[#315a78] hover:text-[#142434]">
+                {d.ctas.viewItineraries} →
+              </a>
+            }
+          />
+          <TourCard
+            title={copy.supportCard.title}
+            duration={copy.supportCard.duration}
+            bestFor={copy.supportCard.bestFor}
+            description={copy.supportCard.body}
+            image="/images/02_hero_tower_landscape.jpg"
+            alt={copy.supportTitle}
+            eyebrow={d.labels.travelSupport}
+            cta={
+              <a href={`/${locale}/contact`} className="inline-flex text-sm font-semibold text-[#315a78] hover:text-[#142434]">
+                {d.ctas.requestTrip} →
+              </a>
+            }
+          />
+        </div>
+      </section>
 
-      <section className="space-y-8"><SectionHeader title={copy.foodTitle} subtitle={copy.foodSubtitle} /><FeatureGrid items={copy.foodItems} /></section>
+      <section className="rounded-[2rem] border border-[#e5e7ea] bg-white p-6 md:p-8">
+        <h2 className="text-3xl font-semibold text-[#142434] md:text-5xl">{copy.supportTitle}</h2>
+        <p className="mt-3 max-w-3xl text-slate-600">{copy.supportSubtitle}</p>
+        <a href={`/${locale}/concierge`} className="btn-secondary mt-6 inline-flex">
+          {d.nav.find((item) => item.key === 'concierge')?.label ?? 'AI Concierge'}
+        </a>
+      </section>
 
-      <section className="rounded-[2rem] border border-slate-200 bg-white p-6 md:p-10"><SectionHeader title={copy.confidenceTitle} subtitle={copy.confidenceSubtitle} /><ul className="grid gap-3 text-slate-700 md:grid-cols-2">{copy.confidenceItems.map((item) => <li key={item} className="rounded-2xl bg-slate-100 px-4 py-3">{item}</li>)}</ul></section>
-
-      <section className="rounded-[2rem] border border-[#d9e1e8] bg-[#f8fbff] p-8"><h2 className="text-3xl font-semibold text-stoneSky">{copy.supportTitle}</h2><p className="mt-3 text-slate-700">{copy.supportSubtitle}</p><a href={`/${locale}/contact`} className="btn-primary mt-6 inline-flex">{d.ctas.askGuidance}</a></section>
-
-      <CTASection title={copy.finalCta} actionLabel={d.ctas.planRoute} href={`/${locale}/plan`} image="/images/01_hero_mountains_sunrise.jpg" alt={copy.heroCaption} />
+      <CTASection title={copy.finalCta} actionLabel={d.ctas.planRoute} href={`/${locale}/plan`} image="/images/04_hero_fiagdon_valley.jpg" alt={copy.heroCaption} />
     </div>
   );
 }

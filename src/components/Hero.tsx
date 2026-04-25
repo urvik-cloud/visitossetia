@@ -19,22 +19,26 @@ export const Hero = ({
   eyebrow: string;
   caption?: string;
 }) => (
-  <section className="relative overflow-hidden rounded-[2.25rem] border border-[#d8e0e8] bg-[#0e2438] p-5 md:p-8">
-    <HeroImage src={image} alt={imageAlt} label={caption} className="absolute inset-0 h-full w-full" />
-    <div className="absolute inset-0 bg-gradient-to-r from-[#0f253bc2] via-[#18345096] to-[#2648635c]" />
-    <div className="absolute inset-0 bg-gradient-to-t from-[#0f213a7a] via-transparent to-[#f5f8ff1c]" />
-    <div className="relative z-10 grid min-h-[440px] content-end gap-6 p-3 md:min-h-[620px] md:max-w-4xl md:p-6">
-      <p className="eyebrow">{eyebrow}</p>
-      <h1 className="text-4xl font-semibold leading-tight text-white md:text-6xl">{title}</h1>
-      <p className="max-w-2xl text-base text-white/85 md:text-xl">{subtitle}</p>
-      <div className="flex flex-wrap gap-3">
-        <a href={primaryCta.href} className="btn-primary">
-          {primaryCta.label}
-        </a>
-        <a href={secondaryCta.href} className="btn-ghost">
-          {secondaryCta.label}
-        </a>
+  <section className="py-3 md:py-6">
+    <div className="grid items-center gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
+      <div className="space-y-6">
+        <p className="eyebrow text-start">{eyebrow}</p>
+        <h1 className="text-balance text-4xl font-semibold leading-[0.95] text-stoneSky md:text-6xl xl:text-7xl">{title}</h1>
+        <p className="max-w-2xl text-lg leading-relaxed text-slate-600 md:text-xl">{subtitle}</p>
+        <div className="flex flex-wrap gap-3">
+          <a href={primaryCta.href} className="btn-primary">
+            {primaryCta.label}
+          </a>
+          <a href={secondaryCta.href} className="btn-secondary">
+            {secondaryCta.label}
+          </a>
+        </div>
       </div>
+
+      <article className="premium-card overflow-hidden p-0">
+        <HeroImage src={image} alt={imageAlt} className="h-[380px] rounded-none md:h-[560px]" />
+        {caption ? <p className="px-5 py-4 text-sm leading-relaxed text-slate-600 md:px-6">{caption}</p> : null}
+      </article>
     </div>
   </section>
 );
