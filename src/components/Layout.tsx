@@ -4,7 +4,7 @@ import type { Locale } from '@/i18n/locales';
 import { LanguageSwitcher } from './LanguageSwitcher';
 
 export const Header = ({ locale, dictionary, pathname }: { locale: Locale; dictionary: Dictionary; pathname: string }) => (
-  <header className="sticky top-0 z-20 border-b border-white/50 bg-slate-50/90 backdrop-blur-md">
+  <header className="sticky top-0 z-20 border-b border-white/40 bg-slate-50/80 backdrop-blur-md">
     <div className="container-pad flex flex-wrap items-center justify-between gap-4 py-4">
       <a className="text-xl font-semibold tracking-tight text-stoneSky" href={`/${locale}`}>
         {dictionary.brand}
@@ -27,20 +27,20 @@ export const Header = ({ locale, dictionary, pathname }: { locale: Locale; dicti
 );
 
 export const Footer = ({ locale, dictionary }: { locale: Locale; dictionary: Dictionary }) => (
-  <footer className="mt-20 border-t border-slate-200 bg-white py-12">
+  <footer className="mt-20 border-t border-slate-200 bg-white/90 py-12">
     <div className="container-pad grid gap-8 md:grid-cols-3">
       <div className="space-y-3">
         <p className="text-lg font-semibold text-stoneSky">{dictionary.brand}</p>
         <p className="text-sm text-slate-600">{dictionary.disclaimer}</p>
       </div>
       <nav className="grid gap-2 text-sm text-slate-700">
-        <a href={`/${locale}/places`}>Places</a>
-        <a href={`/${locale}/itineraries`}>Itineraries</a>
-        <a href={`/${locale}/plan`}>Plan</a>
-        <a href={`/${locale}/contact`}>Contact</a>
+        <a href={`/${locale}/places`}>{dictionary.footer.places}</a>
+        <a href={`/${locale}/itineraries`}>{dictionary.footer.itineraries}</a>
+        <a href={`/${locale}/plan`}>{dictionary.footer.plan}</a>
+        <a href={`/${locale}/contact`}>{dictionary.footer.contact}</a>
       </nav>
       <div className="space-y-3 text-sm text-slate-600">
-        <p>Locales</p>
+        <p>{dictionary.labels.locales}</p>
         <div className="flex flex-wrap gap-2">
           <a href="/en" className="lang-pill">EN</a>
           <a href="/ru" className="lang-pill">RU</a>

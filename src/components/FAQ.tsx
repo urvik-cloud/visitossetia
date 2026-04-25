@@ -1,4 +1,4 @@
-export const FAQ = ({ items }: { items: { q: string; a: string }[] }) => (
+export const FAQ = ({ items }: { items: readonly { q: string; a: string }[] }) => (
   <section className="space-y-4" aria-label="FAQ">
     {items.map((item) => (
       <details key={item.q} className="card">
