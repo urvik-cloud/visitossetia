@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import { isValidLocale } from '@/i18n/routing';
+import { locales } from '@/i18n/locales';
 import { pageMetadata } from '@/lib/seo';
 import { FAQ } from '@/components/FAQ';
 
@@ -22,7 +23,7 @@ const articles: Record<string, { h1: string; desc: string; sections: string[] }>
 };
 
 export function generateStaticParams() {
-  return ['en', 'ru', 'zh', 'ar'].flatMap((locale) => Object.keys(articles).map((slug) => ({ locale, slug })));
+  return locales.flatMap((locale) => Object.keys(articles).map((slug) => ({ locale, slug })));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {

@@ -10,7 +10,7 @@ type Place = {
   time: LocalizedText;
   heroLabel: string;
   whyVisit: LocalizedText;
-  whatToSee: LocalizedText[];
+  whatToSee: Record<Locale, string[]>;
   gettingThere: LocalizedText;
   bestSeason: LocalizedText;
   notes: LocalizedText;

@@ -1,10 +1,11 @@
 import { notFound } from 'next/navigation';
 import { pageMetadata } from '@/lib/seo';
 import { isValidLocale } from '@/i18n/routing';
+import { locales } from '@/i18n/locales';
 import { CTASection } from '@/components/Misc';
 
 export function generateStaticParams() {
-  return ['en', 'ru', 'zh', 'ar'].map((locale) => ({ locale, slug: '3-day-north-ossetia' }));
+  return locales.map((locale) => ({ locale, slug: '3-day-north-ossetia' }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
