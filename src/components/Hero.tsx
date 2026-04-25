@@ -1,39 +1,38 @@
-import { ImagePlaceholder } from './ImagePlaceholder';
-
-type HeroVisual = { label: string; tone: 'mountain' | 'city' | 'culture' | 'snow' | 'road' };
+import { HeroImage } from './ImageCard';
 
 export const Hero = ({
   title,
   subtitle,
   primaryCta,
   secondaryCta,
-  visuals
+  image,
+  imageAlt,
+  eyebrow,
+  caption
 }: {
   title: string;
   subtitle: string;
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
-  visuals: HeroVisual[];
+  image: string;
+  imageAlt: string;
+  eyebrow: string;
+  caption?: string;
 }) => (
-  <section className="hero-shell relative overflow-hidden rounded-[2rem] p-6 md:p-10">
-    <div className="relative z-10 grid gap-8 md:grid-cols-[1.2fr_1fr] md:items-end">
-      <div className="space-y-6">
-        <p className="eyebrow">Visit Ossetia</p>
-        <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-white md:text-6xl">{title}</h1>
-        <p className="max-w-2xl text-base text-white/85 md:text-xl">{subtitle}</p>
-        <div className="flex flex-wrap gap-3">
-          <a href={primaryCta.href} className="btn-primary">
-            {primaryCta.label}
-          </a>
-          <a href={secondaryCta.href} className="btn-ghost">
-            {secondaryCta.label}
-          </a>
-        </div>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2">
-        {visuals.map((visual) => (
-          <ImagePlaceholder key={visual.label} label={visual.label} tone={visual.tone} />
-        ))}
+  <section className="relative overflow-hidden rounded-[2.25rem] border border-[#d8e0e8] bg-[#0e2438] p-5 md:p-8">
+    <HeroImage src={image} alt={imageAlt} label={caption} className="absolute inset-0 h-full w-full" />
+    <div className="absolute inset-0 bg-gradient-to-r from-[#071523f2] via-[#0f2336cc] to-[#15344f88]" />
+    <div className="relative z-10 grid min-h-[420px] content-end gap-6 p-3 md:min-h-[560px] md:max-w-4xl md:p-6">
+      <p className="eyebrow">{eyebrow}</p>
+      <h1 className="text-4xl font-semibold leading-tight text-white md:text-6xl">{title}</h1>
+      <p className="max-w-2xl text-base text-white/85 md:text-xl">{subtitle}</p>
+      <div className="flex flex-wrap gap-3">
+        <a href={primaryCta.href} className="btn-primary">
+          {primaryCta.label}
+        </a>
+        <a href={secondaryCta.href} className="btn-ghost">
+          {secondaryCta.label}
+        </a>
       </div>
     </div>
   </section>
