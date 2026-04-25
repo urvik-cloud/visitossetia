@@ -19,7 +19,19 @@ export default async function ItinerariesPage({ params }: { params: Promise<{ lo
     <div>
       <SectionHeader title="Itineraries" subtitle="Choose a route length, then adapt by season and travel pace." />
       <div className="grid gap-5 md:grid-cols-2">
-        {itineraryCards.map((card) => <ItineraryCard key={card} title={card} description="Practical draft itinerary; refine with transport and weather checks." cta={<a href={`/${locale}/itineraries/3-day-north-ossetia`} className="text-stoneSky">Open route →</a>} />)}
+        {itineraryCards.map((card) => (
+          <ItineraryCard
+            key={card}
+            dayLabel="Suggested Route"
+            title={card}
+            description="Practical draft itinerary; refine with transport and weather checks."
+            cta={
+              <a href={`/${locale}/itineraries/3-day-north-ossetia`} className="inline-flex text-sm font-semibold text-stoneSky hover:text-accent">
+                Open route →
+              </a>
+            }
+          />
+        ))}
       </div>
     </div>
   );

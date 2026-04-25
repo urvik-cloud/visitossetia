@@ -35,7 +35,16 @@ export default async function PlaceDetailPage({ params }: { params: Promise<{ lo
   return (
     <article className="space-y-8">
       <Breadcrumbs locale={typedLocale} items={[{ label: 'Home', href: '' }, { label: 'Places', href: '/places' }, { label: place.title[typedLocale], href: `/places/${place.slug}` }]} />
-      <Hero title={place.title[typedLocale]} subtitle={place.short[typedLocale]} label={place.heroLabel} />
+      <Hero
+        title={place.title[typedLocale]}
+        subtitle={place.short[typedLocale]}
+        primaryCta={{ label: 'Explore Routes', href: `/${typedLocale}/itineraries` }}
+        secondaryCta={{ label: 'Plan Your Trip', href: `/${typedLocale}/plan` }}
+        visuals={[
+          { label: place.heroLabel, tone: 'mountain' },
+          { label: 'Ossetian food table', tone: 'culture' }
+        ]}
+      />
       <section className="card"><h2 className="text-2xl font-semibold">Why visit</h2><p className="mt-2 text-slate-600">{place.whyVisit[typedLocale]}</p></section>
       <section className="card"><h2 className="text-2xl font-semibold">What to see</h2><ul className="mt-3 list-disc space-y-1 ps-6 text-slate-600">{place.whatToSee[typedLocale].map((item: string) => <li key={item}>{item}</li>)}</ul></section>
       <section className="grid gap-5 md:grid-cols-2">

@@ -21,7 +21,22 @@ export default async function PlacesPage({ params }: { params: Promise<{ locale:
     <div className="space-y-8">
       <SectionHeader title={d.nav.find((n) => n.key === 'places')?.label ?? 'Places'} subtitle="Curated destination cards to help you choose where to go first." />
       <div className="grid gap-5 md:grid-cols-2">
-        {places.map((place) => <PlaceCard key={place.slug} title={place.title[locale]} description={place.short[locale]} bestFor={place.bestFor[locale]} time={place.time[locale]} cta={<a href={`/${locale}/places/${place.slug}`} className="text-stoneSky">View details →</a>} />)}
+        {places.map((place, index) => (
+          <PlaceCard
+            key={place.slug}
+            title={place.title[locale]}
+            description={place.short[locale]}
+            bestFor={place.bestFor[locale]}
+            time={place.time[locale]}
+            category={place.heroLabel}
+            tone={index % 2 === 0 ? 'mountain' : 'culture'}
+            cta={
+              <a href={`/${locale}/places/${place.slug}`} className="inline-flex text-sm font-semibold text-stoneSky hover:text-accent">
+                View details →
+              </a>
+            }
+          />
+        ))}
         {placeDirectory.filter((name) => !places.some((p) => p.title.en === name)).map((name) => (
           <article key={name} className="card"><h3 className="text-xl font-semibold">{name}</h3><p className="mt-2 text-slate-600">Directory entry prepared for full article expansion.</p></article>
         ))}

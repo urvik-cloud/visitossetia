@@ -36,10 +36,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       { key: 'food', href: '/food-culture', label: 'Food & Culture' },
       { key: 'guide', href: '/guide', label: 'Guide' },
       { key: 'about', href: '/about', label: 'About' },
-      { key: 'contact', href: '/contact', label: 'Request a Trip' }
+      { key: 'contact', href: '/contact', label: 'Request a Route' }
     ],
     ctas: {
-      requestTrip: 'Request a Trip',
+      requestTrip: 'Request a Route',
       planRoute: 'Plan My Route',
       explorePlaces: 'Explore Places',
       viewItineraries: 'View Itineraries',
@@ -69,10 +69,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       { key: 'food', href: '/food-culture', label: 'Еда и культура' },
       { key: 'guide', href: '/guide', label: 'Гид' },
       { key: 'about', href: '/about', label: 'О проекте' },
-      { key: 'contact', href: '/contact', label: 'Запросить тур' }
+      { key: 'contact', href: '/contact', label: 'Запросить маршрут' }
     ],
     ctas: {
-      requestTrip: 'Запросить тур',
+      requestTrip: 'Запросить маршрут',
       planRoute: 'Спланировать маршрут',
       explorePlaces: 'Смотреть места',
       viewItineraries: 'Смотреть маршруты',
